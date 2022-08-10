@@ -14,4 +14,4 @@ composer install --optimize-autoloader --no-dev
 2. gunakan artisan optimize
 -----------------------------------------------
 php artisan optimize
------------------------------------------------.
+-----------------------------------------------
