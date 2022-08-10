@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')
 ->group(function () {
     Route::get('/surveyors', [SurveyorController::class, 'index']);
-    Route::post('/surveyor/store', [SurveyorController::class, 'index']);
+    Route::post('/surveyor/store', [SurveyorController::class, 'store']);
+    Route::post('/surveyor/destroy', [SurveyorController::class, 'destroy']);
 });
 
 

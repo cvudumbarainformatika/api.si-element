@@ -11,12 +11,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SurveyorController extends Controller
 {
     public function index()
     {
-        $item = Surveyor::paginate(10);
+        $item = Surveyor::with(['user'])
+        ->orderBy(request('order_by'), request('sort'))
+        ->filter(request(['q']))
+        ->paginate(request('per_page'));
         $data = SurveyorResource::collection($item);
 
         return $data;
@@ -25,27 +30,24 @@ class SurveyorController extends Controller
 
     public function store(Request $request)
     {
+
         try {
 
             DB::beginTransaction();
 
-            // $new_pass = $request->password;
-            // $password = '';
-            // // DATA BARU
             if (!$request->has('id')) {
-            //     empty($request->input('password')) ?
-            //         $password = $request->nip : $password = $new_pass;
 
-                $request->validate([
+                $validator = Validator::make($request->all(), [
                     'nik' => 'unique:surveyors',
-                    'email' => 'unique:users',
                     'nama' => 'required',
                 ]);
-
+                if ($validator->fails()) {
+                    return response()->json($validator->errors(), 422);
+                }
                 $user = User::create([
-                    'email' => $request->nik,
+                    'email' => $request->nik.'@app.com',
                     'name' => $request->nama,
-                    'password' => Hash::make($request->nik)
+                    'password' => bcrypt($request->nik)
                 ]);
                 $user->surveyor()->create($request->only([
                     'nik','no_hp','nama','alamat','provinsi','kabkot','kecamatan','kelurahan','kodepos','tempat_lahir','tanggal_lahir','gender','agama'
@@ -53,21 +55,8 @@ class SurveyorController extends Controller
 
 
                 // $auth->log("Memasukkan data PEGAWAI {$user->name}");
-
-                // UPDATE DATA LAMA
             } else {
                 $user = User::find($request->user_id);
-
-                // $data = User::find($request->user_id);
-                // $user->update([
-                //     'email' => $request->email,
-                //     'name' => $request->nama,
-                // ]);
-                // jika ada isian password diubah
-                // if (!empty($request->input('password'))) {
-                //     $user->update(['password' => Hash::make($request->password)]);
-                // }
-                // update data pegawai
                 $user->surveyor()->update([
                     // 'nik' => $request->nik,
                     'no_hp' => $request->no_hp,
@@ -88,13 +77,33 @@ class SurveyorController extends Controller
             }
 
             DB::commit();
-            /* Transaction successful. */
-            return response()->json(['message' => 'Success', 'result' => $request->all()], 201);
+            return new JsonResponse(['message' => 'Success', 'result' => $request->all()], 201);
         } catch (\Exception $e) {
-
             DB::rollback();
-            /* Transaction failed. */
-            return response()->json(['message' => 'Ada Kesalahan'], 500);
+            return new JsonResponse(['message' => $e],500);
         }
+    }
+
+    public function destroy(Request $request)
+    {
+        $auth = $request->user();
+        $auth_id = $auth->id;
+        $data = Surveyor::find($request->id);
+        if ($auth_id === $data->user_id) {
+            return response()->json([
+                'message' => 'Tidak bisa hapus diri sendiri'
+            ], 500);
+        }
+
+        $del = $data->user()->delete();
+        if (!$del) {
+            return response()->json([
+                'message' => 'Hapus Data Error!'
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Data sukses terhapus'
+        ], 200);
     }
 }

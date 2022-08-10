@@ -34,6 +34,7 @@ class SurveyorResource extends JsonResource
             'flag' => $this->flag,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'user'=> UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

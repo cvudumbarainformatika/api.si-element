@@ -42,10 +42,12 @@ class DatabaseSeeder extends Seeder
 
         Surveyor::create([
             'nama' => 'Dr. Farid Harja',
+            'nik' => '12345',
             'user_id'=>3
         ]);
         Surveyor::create([
             'nama' => 'Dr. Fatimah',
+            'nik' => '123456',
             'user_id'=>4
         ]);
     }

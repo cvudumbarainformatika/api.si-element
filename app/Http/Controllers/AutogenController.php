@@ -10,7 +10,7 @@ class AutogenController extends Controller
 {
     public function index()
     {
-        $tableName = 'surveyors';
+        $tableName = 'users';
         $data = Schema::getColumnListing($tableName);
 
         echo '<br>';
