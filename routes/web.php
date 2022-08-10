@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NotificationEvent;
 use App\Http\Controllers\AutogenController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/send-event', function () {
+    $message = 'Percobaan Message';
+    broadcast(new NotificationEvent($message));
 });
 
 Route::get('/autogen', [AutogenController::class, 'index']);
