@@ -129,8 +129,8 @@ return [
          */
         'passphrase' => env('LARAVEL_WEBSOCKETS_SSL_PASSPHRASE', null),
 
-        'verify_peer'=>false,
-        'verify_peer_name'=> false
+        // 'verify_peer'=>false,
+        // 'verify_peer_name'=> false
     ],
 
     /*
