@@ -42,7 +42,7 @@ return [
                 'port' => env('PUSHER_PORT'),
                 'scheme' => env('PUSHER_SCHEME'),
                 // 'debug'=>true,
-                // 'useTLS'=>true,
+                'useTLS'=>false,
                 // 'curl_options' => [
                 //     CURLOPT_SSL_VERIFYHOST => 0,
                 //     CURLOPT_SSL_VERIFYPEER => 0,

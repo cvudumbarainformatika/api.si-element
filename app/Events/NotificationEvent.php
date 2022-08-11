@@ -35,6 +35,11 @@ class NotificationEvent implements ShouldBroadcast
     {
         return new Channel('public.notification.1');
     }
+
+    public function broadcastAs()
+    {
+        return 'notification';
+    }
     public function broadcastWith()
     {
         //return data

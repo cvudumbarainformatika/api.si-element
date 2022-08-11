@@ -20,7 +20,8 @@ Route::get('/', function () {
 });
 Route::get('/send-event', function () {
     $message = 'Percobaan Message';
-    broadcast(new NotificationEvent($message));
+    event(new NotificationEvent($message));
+    return null;
 });
 
 Route::get('/autogen', [AutogenController::class, 'index']);
