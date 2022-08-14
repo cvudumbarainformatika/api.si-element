@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 class AutogenController extends Controller
 {
+    
     public function index()
     {
         $tableName = 'users';
