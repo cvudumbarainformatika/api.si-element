@@ -17,7 +17,7 @@ class SettingSeeder extends Seeder
     {
 
         AppSetting::create([
-            'nama' => 'Silamina',
+            'nama' => 'Si-Element',
             'infos' => [
                 'nama' => 'Sistem Informasi Lipa Mitra Nusa',
                 'alamat' => 'alamat belum di isi',

@@ -7,24 +7,32 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('jwt.verify', ['except' => ['login', 'register']]);
     }
 
     public function login(Request $request)
     {
-        $request->validate([
+        $validated = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-        $credentials = $request->only('email', 'password');
-
-        $token = Auth::attempt($credentials);
+        if ($validated->fails()) {
+            return new JsonResponse(['status' => 'error', 'message' => 'invalid Credential'], 422);
+        }
+        // config()->set('jwt.ttl', 60);
+        // overide token ttl
+        // $token = JWTAuth::setTTL(120)->attempt($validated->validate());
+        // $token = auth()->setTTL(120)->attempt($validated->validate());
+        $token = JWTAuth::attempt($validated->validate());
         if (!$token) {
             return response()->json([
                 'status' => 'error',
@@ -32,7 +40,7 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = Auth::user();
+        $user = JWTAuth::user();
         return response()->json([
             'status' => 'success',
             'user' => $user,

@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('app_settings', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('infos');
-            $table->string('themes');
-            $table->string('menus');
+            $table->json('infos');
+            $table->json('themes');
+            $table->json('menus');
             $table->timestamps();
         });
     }
