@@ -55,11 +55,7 @@ class SettingSeeder extends Seeder
                 [
                     "name" => "warning",
                     "value" => "#d6a100"
-                ],
-                [
-                    "name" => "danger",
-                    "value" => "#eb0909"
-                ],
+                ]
             ],
             'menus' => [
                 ['name' => 'dashboard', 'icon' => 'icon-mat-dashboard', 'link' => 'dashboard', 'submenus' => []],
