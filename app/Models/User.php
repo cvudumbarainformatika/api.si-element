@@ -69,4 +69,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Register::class, 'user_id', 'id');
     }
+
+    public function scopeFilter($search, array $reqs)
+    {
+        $search->when($reqs['q'] ?? false, function ($search, $query) {
+            return $search->where('name', 'LIKE', '%' . $query . '%');
+        });
+    }
 }

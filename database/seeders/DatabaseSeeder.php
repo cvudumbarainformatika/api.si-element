@@ -16,23 +16,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(100)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
 
-        User::create([
-            'name' => 'farhan',
-            'email' => 'faran.f4124n@gmail.com',
-            'password' => bcrypt('123456'),
-            'status' => 'aktif',
-            'role' => 'admin'
-        ]);
+        // User::create([
+        //     'name' => 'farhan',
+        //     'email' => 'faran.f4124n@gmail.com',
+        //     'password' => bcrypt('123456'),
+        //     'status' => 'aktif',
+        //     'role' => 'admin'
+        // ]);
 
-        $this->call([
-            SettingSeeder::class
-        ]);
+        // $this->call([
+        //     SettingSeeder::class
+        // ]);
     }
 }

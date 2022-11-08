@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('registers', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->nullable();
             $table->string('nama');
             $table->bigInteger('nik')->nullable();
             $table->bigInteger('nohp1')->nullable();

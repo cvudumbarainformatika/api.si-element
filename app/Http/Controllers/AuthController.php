@@ -40,7 +40,8 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = JWTAuth::user()->with('register');
+        $user = JWTAuth::user();
+        $user->load('register');
         return response()->json([
             'status' => 'success',
             'user' => $user,
@@ -74,7 +75,8 @@ class AuthController extends Controller
     public function userProfile()
     {
 
-        $user = JWTAuth::user()->with('register');
+        $user = JWTAuth::user();
+        $user->load('register');
         $response = [
             'message' => 'Detail data',
             'data' => $user

@@ -135,7 +135,7 @@ class RegisterController extends Controller
                 'status' => 3
             ]);
             if ($data) {
-                $user->update([
+                $data->user()->update([
                     'password' => Hash::make($request->password_baru)
                 ]);
             }
