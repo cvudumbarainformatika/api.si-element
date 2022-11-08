@@ -13,14 +13,15 @@ class SurveyorController extends Controller
 {
     public function index()
     {
-        $Surveyor = Surveyor::all();
+        $Surveyor = Surveyor::orderBy(request('order_by'), request('sort'))
+            ->filter(request(['q']))->paginate(request('per_page'));
         return response()->json($Surveyor, 200);
     }
 
     public function Surveyoruser(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string',
+            'nama_lengkap' => 'required|string',
             'email' => 'required|string|email',
             // 'password' => 'required|string|min:6'
         ]);
@@ -28,7 +29,7 @@ class SurveyorController extends Controller
         try {
             $Surveyor = Surveyor::create([
                 'nik' => $request->nik,
-                'nama' => $request->nama,
+                'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,
                 'status' => 1,
             ]);
@@ -45,7 +46,7 @@ class SurveyorController extends Controller
         }
     }
 
-    public function show(Surveyor $Surveyor, $id)
+    public function show($id)
     {
         $Surveyor = Surveyor::findOrFail($id);
         $Surveyor->load('user');
@@ -66,13 +67,13 @@ class SurveyorController extends Controller
             $randPass .= $characters[rand(0, $charactersLength - 1)];
         }
         $request->validate([
-            'nama' => 'required|string',
+            'nama_lengkap' => 'required|string',
             'email' => 'required|string|email',
         ]);
         try {
             $dataSurveyor->update([
                 'nik' => $request->nik,
-                'nama' => $request->nama,
+                'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,
                 'status' => 2,
                 'password' => $randPass,
@@ -81,9 +82,9 @@ class SurveyorController extends Controller
                 $data = User::create([
                     'email' => $request->email,
                     'password' => Hash::make($randPass),
-                    'name' => $request->nama,
+                    'name' => $request->nama_lengkap,
                     'status' => 'aktif',
-                    'role' => 'surveor'
+                    'role' => 'surveyor'
                 ]);
                 $dataSurveyor->update([
                     'user_id' => $data->id
@@ -113,11 +114,11 @@ class SurveyorController extends Controller
         $data = Surveyor::findOrFail($id);
         $request->validate([
             'nik' => 'required',
-            'nama' => 'required|string',
+            'nama_lengkap' => 'required|string',
             'email' => 'required|string|email',
-            'nohp1' => 'required',
-            'nohp2' => 'required',
-            'norekening' => 'required',
+            'no_hp1' => 'required',
+            'no_hp2' => 'required',
+            'no_rekening' => 'required',
             'password_baru' => 'required|min:6|confirmed',
             'password_baru_confirmation' => 'required|min:6'
         ]);
@@ -125,11 +126,35 @@ class SurveyorController extends Controller
         try {
             $data->update([
                 'nik' => $request->nik,
-                'nama' => $request->nama,
+                'nama_lengkap' => $request->nama_lengkap,
                 'email' => $request->email,
-                'nohp1' => $request->nohp1,
-                'nohp2' => $request->nohp2,
-                'norekening' => $request->norekening,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'gender' => $request->gender,
+                'agama' => $request->agama,
+                'no_hp1' => $request->no_hp1,
+                'no_hp2' => $request->no_hp2,
+                'nama_npwp' => $request->nama_npwp,
+                'nama_bank' => $request->nama_bank,
+                'no_rekening' => $request->no_rekening,
+                'nama_buku_tabungan' => $request->nama_buku_tabungan,
+                'no_asuransi_bpjs' => $request->no_asuransi_bpjs,
+                'nilai_toefl' => $request->nilai_toefl,
+                'bidang_survei' => $request->bidang_survei,
+                'status_kepegawaian' => $request->status_kepegawaian,
+                'profesi' => $request->profesi,
+                'alamat' => $request->alamat,
+                'provinsi' => $request->provinsi,
+                'kabkot' => $request->kabkot,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'kodepos' => $request->kodepos,
+                'domil_alamat' => $request->domil_alamat,
+                'domil_provinsi' => $request->domil_provinsi,
+                'domil_kabkot' => $request->domil_kabkot,
+                'domil_kecamatan' => $request->domil_kecamatan,
+                'domil_kelurahan' => $request->domil_kelurahan,
+                'domil_kodepos' => $request->domil_kodepos,
                 'password' => $request->password_baru,
                 'status' => 3
             ]);
@@ -139,7 +164,7 @@ class SurveyorController extends Controller
                 ]);
             }
             $response = [
-                'message' => 'Biodata berhasil di tambah',
+                'message' => 'Biodata berhasil di perbarui',
                 'data' => $data
             ];
             return response()->json($response, 201);

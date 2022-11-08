@@ -14,4 +14,11 @@ class Surveyor extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function scopeFilter($search, array $reqs)
+    {
+        $search->when($reqs['q'] ?? false, function ($search, $query) {
+            return $search->where('nama_lengkap', 'LIKE', '%' . $query . '%');
+        });
+    }
 }

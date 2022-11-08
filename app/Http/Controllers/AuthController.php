@@ -41,7 +41,7 @@ class AuthController extends Controller
         }
 
         $user = JWTAuth::user();
-        $user->load('register');
+        $user->load('surveyor');
         return response()->json([
             'status' => 'success',
             'user' => $user,
@@ -76,7 +76,7 @@ class AuthController extends Controller
     {
 
         $user = JWTAuth::user();
-        $user->load('register');
+        $user->load('surveyor');
         $response = [
             'message' => 'Detail data',
             'data' => $user

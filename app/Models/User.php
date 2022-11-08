@@ -65,9 +65,9 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function register()
+    public function surveyor()
     {
-        return $this->hasOne(Register::class, 'user_id', 'id');
+        return $this->hasOne(Surveyor::class, 'user_id', 'id');
     }
 
     public function scopeFilter($search, array $reqs)
