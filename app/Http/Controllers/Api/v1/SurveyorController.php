@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\Register;
+use App\Models\Surveyor;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class RegisterController extends Controller
+class SurveyorController extends Controller
 {
     public function index()
     {
-        $register = Register::all();
-        return response()->json($register, 200);
+        $Surveyor = Surveyor::all();
+        return response()->json($Surveyor, 200);
     }
 
-    public function registeruser(Request $request)
+    public function Surveyoruser(Request $request)
     {
         $request->validate([
             'nama' => 'required|string',
@@ -26,7 +26,7 @@ class RegisterController extends Controller
         ]);
 
         try {
-            $register = Register::create([
+            $Surveyor = Surveyor::create([
                 'nik' => $request->nik,
                 'nama' => $request->nama,
                 'email' => $request->email,
@@ -36,8 +36,8 @@ class RegisterController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Register Tersimpan',
-                'register' => $register
+                'message' => 'Surveyor Tersimpan',
+                'Surveyor' => $Surveyor
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -45,20 +45,20 @@ class RegisterController extends Controller
         }
     }
 
-    public function show(Register $register, $id)
+    public function show(Surveyor $Surveyor, $id)
     {
-        $register = Register::findOrFail($id);
-        $register->load('user');
+        $Surveyor = Surveyor::findOrFail($id);
+        $Surveyor->load('user');
         $response = [
             'message' => 'Detail data',
-            'data' => $register
+            'data' => $Surveyor
         ];
         return response()->json($response);
     }
 
     public function update(Request $request, $id, $length = 8)
     {
-        $dataRegister = Register::findOrFail($id);
+        $dataSurveyor = Surveyor::findOrFail($id);
         $characters = '0123456789';
         $charactersLength = strlen($characters);
         $randPass = '';
@@ -70,14 +70,14 @@ class RegisterController extends Controller
             'email' => 'required|string|email',
         ]);
         try {
-            $dataRegister->update([
+            $dataSurveyor->update([
                 'nik' => $request->nik,
                 'nama' => $request->nama,
                 'email' => $request->email,
                 'status' => 2,
                 'password' => $randPass,
             ]);
-            if ($dataRegister) {
+            if ($dataSurveyor) {
                 $data = User::create([
                     'email' => $request->email,
                     'password' => Hash::make($randPass),
@@ -85,7 +85,7 @@ class RegisterController extends Controller
                     'status' => 'aktif',
                     'role' => 'surveor'
                 ]);
-                $dataRegister->update([
+                $dataSurveyor->update([
                     'user_id' => $data->id
                 ]);
                 $kirimEmail = ([
@@ -97,8 +97,8 @@ class RegisterController extends Controller
             }
 
             $response = [
-                'message' => 'data register berhasil di perbarui',
-                'data' => $dataRegister
+                'message' => 'data Surveyor berhasil di perbarui',
+                'data' => $dataSurveyor
             ];
             return response()->json($response, 201);
         } catch (\Exception $e) {
@@ -110,8 +110,7 @@ class RegisterController extends Controller
 
     public function updateFull(Request $request, $id)
     {
-        $data = Register::findOrFail($id);
-        $user = auth()->user();
+        $data = Surveyor::findOrFail($id);
         $request->validate([
             'nik' => 'required',
             'nama' => 'required|string',
