@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class SurveyorController extends Controller
 {
@@ -159,7 +160,7 @@ class SurveyorController extends Controller
                 'status' => 3
             ]);
             if ($data) {
-                $data->user()->update([
+                JWTAuth::user()->update([
                     'password' => Hash::make($request->password_baru)
                 ]);
             }
