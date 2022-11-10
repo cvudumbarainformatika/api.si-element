@@ -114,61 +114,106 @@ class SurveyorController extends Controller
     {
         $data = Surveyor::findOrFail($id);
         $request->validate([
-            'nik' => 'required',
+            'nik' => 'required|min:15|max:17',
+            'no_asuransi_bpjs' => 'required|min:15|max:17',
             'nama_lengkap' => 'required|string',
             'email' => 'required|string|email',
             'no_hp1' => 'required',
             'no_hp2' => 'required',
             'no_rekening' => 'required',
-            'password_baru' => 'required|min:6|confirmed',
-            'password_baru_confirmation' => 'required|min:6'
         ]);
 
         try {
-            $data->update([
-                'nik' => $request->nik,
-                'nama_lengkap' => $request->nama_lengkap,
-                'email' => $request->email,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'gender' => $request->gender,
-                'agama' => $request->agama,
-                'no_hp1' => $request->no_hp1,
-                'no_hp2' => $request->no_hp2,
-                'nama_npwp' => $request->nama_npwp,
-                'nama_bank' => $request->nama_bank,
-                'no_rekening' => $request->no_rekening,
-                'nama_buku_tabungan' => $request->nama_buku_tabungan,
-                'no_asuransi_bpjs' => $request->no_asuransi_bpjs,
-                'nilai_toefl' => $request->nilai_toefl,
-                'bidang_survei' => $request->bidang_survei,
-                'status_kepegawaian' => $request->status_kepegawaian,
-                'profesi' => $request->profesi,
-                'alamat' => $request->alamat,
-                'provinsi' => $request->provinsi,
-                'kabkot' => $request->kabkot,
-                'kecamatan' => $request->kecamatan,
-                'kelurahan' => $request->kelurahan,
-                'kodepos' => $request->kodepos,
-                'domil_alamat' => $request->domil_alamat,
-                'domil_provinsi' => $request->domil_provinsi,
-                'domil_kabkot' => $request->domil_kabkot,
-                'domil_kecamatan' => $request->domil_kecamatan,
-                'domil_kelurahan' => $request->domil_kelurahan,
-                'domil_kodepos' => $request->domil_kodepos,
-                'password' => $request->password_baru,
-                'status' => 3
-            ]);
-            if ($data) {
-                JWTAuth::user()->update([
-                    'password' => Hash::make($request->password_baru)
+            if ($request->password) {
+                $data->update([
+                    'nik' => $request->nik,
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'email' => $request->email,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'gender' => $request->gender,
+                    'agama' => $request->agama,
+                    'no_hp1' => $request->no_hp1,
+                    'no_hp2' => $request->no_hp2,
+                    'nama_npwp' => $request->nama_npwp,
+                    'nama_bank' => $request->nama_bank,
+                    'no_rekening' => $request->no_rekening,
+                    'nama_buku_tabungan' => $request->nama_buku_tabungan,
+                    'no_asuransi_bpjs' => $request->no_asuransi_bpjs,
+                    'nilai_toefl' => $request->nilai_toefl,
+                    'bidang_survei' => $request->bidang_survei,
+                    'status_kepegawaian' => $request->status_kepegawaian,
+                    'profesi' => $request->profesi,
+                    'alamat' => $request->alamat,
+                    'provinsi' => $request->provinsi,
+                    'kabkot' => $request->kabkot,
+                    'kecamatan' => $request->kecamatan,
+                    'kelurahan' => $request->kelurahan,
+                    'kodepos' => $request->kodepos,
+                    'domil_alamat' => $request->domil_alamat,
+                    'domil_provinsi' => $request->domil_provinsi,
+                    'domil_kabkot' => $request->domil_kabkot,
+                    'domil_kecamatan' => $request->domil_kecamatan,
+                    'domil_kelurahan' => $request->domil_kelurahan,
+                    'domil_kodepos' => $request->domil_kodepos,
+                    'password' => $request->password_baru,
+                    'status' => 3
                 ]);
+                if ($data) {
+                    JWTAuth::user()->update([
+                        'password' => Hash::make($request->password_baru)
+                    ]);
+                }
+                $response = [
+                    'message' => 'Biodata berhasil di perbarui',
+                    'data' => $data
+                ];
+                return response()->json($response, 201);
+            } else {
+                $data->update([
+                    'nik' => $request->nik,
+                    'nama_lengkap' => $request->nama_lengkap,
+                    'email' => $request->email,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'gender' => $request->gender,
+                    'agama' => $request->agama,
+                    'no_hp1' => $request->no_hp1,
+                    'no_hp2' => $request->no_hp2,
+                    'nama_npwp' => $request->nama_npwp,
+                    'nama_bank' => $request->nama_bank,
+                    'no_rekening' => $request->no_rekening,
+                    'nama_buku_tabungan' => $request->nama_buku_tabungan,
+                    'no_asuransi_bpjs' => $request->no_asuransi_bpjs,
+                    'nilai_toefl' => $request->nilai_toefl,
+                    'bidang_survei' => $request->bidang_survei,
+                    'status_kepegawaian' => $request->status_kepegawaian,
+                    'profesi' => $request->profesi,
+                    'alamat' => $request->alamat,
+                    'provinsi' => $request->provinsi,
+                    'kabkot' => $request->kabkot,
+                    'kecamatan' => $request->kecamatan,
+                    'kelurahan' => $request->kelurahan,
+                    'kodepos' => $request->kodepos,
+                    'domil_alamat' => $request->domil_alamat,
+                    'domil_provinsi' => $request->domil_provinsi,
+                    'domil_kabkot' => $request->domil_kabkot,
+                    'domil_kecamatan' => $request->domil_kecamatan,
+                    'domil_kelurahan' => $request->domil_kelurahan,
+                    'domil_kodepos' => $request->domil_kodepos,
+                ]);
+                if ($data) {
+                    JWTAuth::user()->update([
+                        'email' => $request->email,
+                        'name' => $request->nama_lengkap
+                    ]);
+                }
+                $response = [
+                    'message' => 'Profil berhasil di perbarui',
+                    'data' => $data
+                ];
+                return response()->json($response, 201);
             }
-            $response = [
-                'message' => 'Biodata berhasil di perbarui',
-                'data' => $data
-            ];
-            return response()->json($response, 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'ada kesalahan', 'error' => $e]);
