@@ -124,7 +124,7 @@ class SurveyorController extends Controller
         ]);
 
         try {
-            if ($request->password) {
+            if ($request->password_baru) {
                 $data->update([
                     'nik' => $request->nik,
                     'nama_lengkap' => $request->nama_lengkap,
