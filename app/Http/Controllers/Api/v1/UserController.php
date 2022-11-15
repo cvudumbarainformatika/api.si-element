@@ -82,13 +82,14 @@ class UserController extends Controller
         //     if (!$user->save()) {
         //         return response()->json(['message' => 'Database Gagal Disimpan'], 500);
         //     }
-        //     return response()->json(['message' => 'Gambar Berhasil Disimpan'], 200);
+        // return response()->json(['message' => 'Gambar Berhasil Disimpan'], 200);
         // }
         // return new JsonResponse(['message' => 'tidak ada file'], 500);
 
 
         $user = User::find($request->id);
         if ($request->hasFile('gambar') && $user->photo !== null) {
+            // return response()->json(['message' => 'user masuk update'], 200);
             $old_path = $user->photo;
             Storage::delete('public/' . $old_path);
             $request->validate([
@@ -108,6 +109,7 @@ class UserController extends Controller
                 ], 500);
             }
         } else if ($request->hasFile('gambar')) {
+            // return response()->json(['message' => 'user mau buat'], 200);
             $path = $request->file('gambar')->store('images', 'public');
             if (!$path) {
                 return new JsonResponse(['message' => 'Gambar Gagal Disimpan'], 500);
@@ -119,6 +121,7 @@ class UserController extends Controller
             }
             return new JsonResponse(['message' => 'Gambar Berhasil Disimpan'], 200);
         } else {
+            // return response()->json(['message' => 'keluar aja'], 200);
             exit;
         }
 
