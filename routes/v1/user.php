@@ -10,5 +10,5 @@ Route::group([
 ], function () {
     Route::get('/all', [UserController::class, 'index']);
     Route::post('/store', [UserController::class, 'store']);
-    Route::post('/destroy', [UserController::class, 'destroy']);
+    Route::post('/upload', [UserController::class, 'uploadImage']);
 });

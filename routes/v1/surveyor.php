@@ -11,6 +11,7 @@ Route::group([
     Route::post('/surveyoredit/{id}', [SurveyorController::class, 'update']);
     Route::post('/updatefull/{id}', [SurveyorController::class, 'updateFull']);
     Route::get('/surveyorme/{id}', [SurveyorController::class, 'show']);
+    Route::post('/destroy', [SurveyorController::class, 'destroy']);
 });
 Route::group([
     // 'middleware' => 'jwt.verify',

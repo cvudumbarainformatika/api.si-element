@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class SurveyorController extends Controller
@@ -217,6 +218,26 @@ class SurveyorController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'ada kesalahan', 'error' => $e]);
+        }
+    }
+
+    public function destroy(Request $request)
+    {
+        $id = $request->id;
+        $data = Surveyor::find($id);
+        $userId = $data->user_id;
+        $data_user = User::find($userId);
+        $old_path = $data_user->photo;
+        Storage::delete('public/' . $old_path);
+        try {
+            $data->delete();
+            $data_user->delete();
+
+            return response()->json(['message' => 'Data terhapus'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed' . $e->errorInfo
+            ]);
         }
     }
 }
