@@ -68,28 +68,6 @@ class UserController extends Controller
 
     public function uploadImage(Request $request)
     {
-<<<<<<< HEAD
-=======
-        // if ($request->hasFile('gambar')) {
-        //     $request->validate([
-        //         'gambar' => 'required|image|mimes:jpeg,png,jpg'
-        //     ]);
-        //     $path = $request->file('gambar')->store('images', 'public');
-
-        //     if (!$path) {
-        //         return response()->json(['message' => 'Gambar Gagal Disimpan'], 500);
-        //     }
-        //     $user = User::find($request->id);
-        //     $user->photo = $path;
-        //     if (!$user->save()) {
-        //         return response()->json(['message' => 'Database Gagal Disimpan'], 500);
-        //     }
-        // return response()->json(['message' => 'Gambar Berhasil Disimpan'], 200);
-        // }
-        // return new JsonResponse(['message' => 'tidak ada file'], 500);
-
->>>>>>> ad0e07fd092bef03a5feea49419c0dcec3754d45
-
         $user = User::find($request->id);
         if ($request->hasFile('gambar') && $user->photo !== null) {
             // return response()->json(['message' => 'user masuk update'], 200);
