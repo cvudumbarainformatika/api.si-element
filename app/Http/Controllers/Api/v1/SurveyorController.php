@@ -100,7 +100,7 @@ class SurveyorController extends Controller
             }
 
             $response = [
-                'message' => 'data Surveyor berhasil di perbarui',
+                'message' => 'Email terkirim',
                 'data' => $dataSurveyor
             ];
             return response()->json($response, 201);
@@ -113,7 +113,7 @@ class SurveyorController extends Controller
 
     public function updateFull(Request $request, $id)
     {
-        $data = Surveyor::findOrFail($id);
+        $data = Surveyor::find($id);
         $request->validate([
             'nik' => 'required|min:15|max:17',
             'no_asuransi_bpjs' => 'required|min:15|max:17',

@@ -25,6 +25,6 @@ class KirimEmailController extends Controller
 
         ];
         Mail::to($data['email'])->send(new PesanEmail($data_email));
-        return new JsonResponse(['message' => 'Success'], 200);
+        return new JsonResponse(['message' => 'Email terkirim'], 200);
     }
 }
