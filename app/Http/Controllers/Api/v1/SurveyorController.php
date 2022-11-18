@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\Surveyor;
 use App\Models\User;
+use App\Notifications\EmailNotification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
@@ -59,8 +62,12 @@ class SurveyorController extends Controller
         return response()->json($response);
     }
 
-    public function update(Request $request, $id, $length = 8)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'id' => 'required',
+        ]);
+        $length = 8;
         $dataSurveyor = Surveyor::findOrFail($id);
         $characters = '0123456789';
         $charactersLength = strlen($characters);
@@ -68,18 +75,15 @@ class SurveyorController extends Controller
         for ($i = 0; $i < $length; $i++) {
             $randPass .= $characters[rand(0, $charactersLength - 1)];
         }
-        $request->validate([
-            'nama_lengkap' => 'required|string',
-            'email' => 'required|string|email',
-        ]);
+
         try {
-            $dataSurveyor->update([
-                'nik' => $request->nik,
-                'nama_lengkap' => $request->nama_lengkap,
-                'email' => $request->email,
-                'status' => 2,
-                'password' => $randPass,
-            ]);
+            // $dataSurveyor->update([
+            //     'nik' => $request->nik,
+            //     'nama_lengkap' => $request->nama_lengkap,
+            //     'email' => $request->email,
+            //     'status' => 2,
+            //     'password' => $randPass,
+            // ]);
             if ($dataSurveyor) {
                 $data = User::create([
                     'email' => $request->email,
@@ -89,19 +93,25 @@ class SurveyorController extends Controller
                     'role' => 'surveyor'
                 ]);
                 $dataSurveyor->update([
+                    'status' => 2,
+                    'password' => $randPass,
                     'user_id' => $data->id
                 ]);
+                // $data = User::find($dataSurveyor->user_id);
+                // return new JsonResponse($data);
                 $kirimEmail = ([
-                    'name' => $data->name,
-                    'email' =>  $data->email,
+                    'email' => $data->email,
+                    'id' =>  $data->id,
                     'password' => $randPass
                 ]);
-                KirimEmailController::index($kirimEmail);
+                // $user = User::query()->where('id', '160')->get();
+
+                KirimEmailController::notifEmail($kirimEmail);
             }
 
             $response = [
-                'message' => 'Email terkirim',
-                'data' => $dataSurveyor
+                'message' => 'Data berhasil di konfirmasi',
+                'data' => $kirimEmail
             ];
             return response()->json($response, 201);
         } catch (\Exception $e) {
