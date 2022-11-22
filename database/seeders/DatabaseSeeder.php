@@ -30,6 +30,13 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
             'role' => 'admin'
         ]);
+        User::create([
+            'name' => 'wawan',
+            'email' => 'wawan@app.com',
+            'password' => bcrypt('123456'),
+            'status' => 'aktif',
+            'role' => 'root'
+        ]);
 
         $this->call([
             SettingSeeder::class
