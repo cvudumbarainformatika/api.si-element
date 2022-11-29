@@ -39,7 +39,6 @@ class SurveyorController extends Controller
                 'status' => 1,
             ]);
 
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Surveyor Tersimpan',
