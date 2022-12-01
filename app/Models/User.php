@@ -71,6 +71,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Surveyor::class, 'user_id', 'id');
     }
 
+    public function puskesmas()
+    {
+        return $this->hasOne(Puskesmas::class, 'user_id', 'id');
+    }
+
     public function scopeFilter($search, array $reqs)
     {
         $search->when($reqs['q'] ?? false, function ($search, $query) {

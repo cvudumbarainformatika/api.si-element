@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class PuskesmasController extends Controller
 {
+    public function index()
+    {
+        $puskesmas = Puskesmas::orderBy(request('order_by'), request('sort'))
+            ->filter(request(['q']))->paginate(request('per_page'));
+        return response()->json($puskesmas, 200);
+    }
 
     public function puskesmasUser(Request $request)
     {
