@@ -76,13 +76,7 @@ class SurveyorController extends Controller
         }
 
         try {
-            // $dataSurveyor->update([
-            //     'nik' => $request->nik,
-            //     'nama_lengkap' => $request->nama_lengkap,
-            //     'email' => $request->email,
-            //     'status' => 2,
-            //     'password' => $randPass,
-            // ]);
+
             if ($dataSurveyor) {
                 $data = User::create([
                     'email' => $request->email,
@@ -96,15 +90,11 @@ class SurveyorController extends Controller
                     'password' => $randPass,
                     'user_id' => $data->id
                 ]);
-                // $data = User::find($dataSurveyor->user_id);
-                // return new JsonResponse($data);
                 $kirimEmail = ([
                     'email' => $data->email,
                     'id' =>  $data->id,
                     'password' => $randPass
                 ]);
-                // $user = User::query()->where('id', '160')->get();
-
                 KirimEmailController::notifEmail($kirimEmail);
             }
 
