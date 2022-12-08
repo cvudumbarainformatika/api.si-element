@@ -38,7 +38,7 @@ class KirimEmailController extends Controller
     {
         // return $data['email'];
 
-        $url = 'http://localhost:9000/login';
+        $url = 'https://simpedak.udumbarainformatika.my.id/login';
         // $user = User::where('id', $data->id)->get();
         $user = User::find($data['id']);
         $data_email = [
