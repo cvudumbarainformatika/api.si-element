@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group([
-    'middleware' => 'jwt.verify',
+    'middleware' => 'auth:api',
     'prefix' => 'user'
 ], function () {
     Route::get('/all', [UserController::class, 'index']);
