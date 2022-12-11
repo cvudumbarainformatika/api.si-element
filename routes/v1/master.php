@@ -8,6 +8,6 @@ Route::group([
     'prefix' => 'master'
 ], function () {
     Route::get('/all', [BidangSurveiController::class, 'index']);
-    Route::post('/update', [BidangSurveiController::class, 'update']);
+    Route::post('/store', [BidangSurveiController::class, 'store']);
     Route::post('/destroy', [BidangSurveiController::class, 'destroy']);
 });

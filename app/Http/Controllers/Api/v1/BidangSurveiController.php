@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\BidangSurvei;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class BidangSurveiController extends Controller
 {
@@ -17,36 +19,30 @@ class BidangSurveiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required'
-        ]);
-
         try {
-            BidangSurvei::create([
-                'nama' => $request->nama
-            ]);
+            DB::beginTransaction();
+            if (!$request->has('id')) {
+                $validateData = Validator::make($request->all(), [
+                    'nama' => 'required'
+                ]);
+                if ($validateData->fails()) {
+                    return response()->json($validateData->errors(), 422);
+                }
+                BidangSurvei::firstOrCreate([
+                    'nama' => $request->nama
+                ]);
+            } else {
+                $bidangSurvei = BidangSurvei::find($request->id);
+                $bidangSurvei->update([
+                    'nama' => $request->nama
+                ]);
+            }
+            DB::commit();
             return response()->json([
                 'status' => 'success',
-                'message' => 'Bidang survei tersimpan'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'ada kesalahan', 'error' => $e], 500);
-        }
-    }
-
-    public function update(Request $request)
-    {
-        try {
-            $data = BidangSurvei::find($request->id);
-            $data->update([
-                'nama' => $request->nama
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Bidang survei di perbarui'
             ], 201);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['message' => 'ada kesalahan', 'error' => $e], 500);
         }
     }
