@@ -3,24 +3,33 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Models\BidangSurvei;
+use App\Models\StatusKepegawaian;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class BidangSurveiController extends Controller
+class StatusKPController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $bidang = BidangSurvei::orderBy(request('order_by'), request('sort'))
+        $statusKP = StatusKepegawaian::orderBy(request('order_by'), request('sort'))
             ->filter(request(['q']))->paginate(request('per_page'));
-        return response()->json($bidang, 200);
+        return response()->json($statusKP, 200);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         try {
-            // DB::beginTransaction();
             if (!$request->has('id')) {
                 $validateData = Validator::make($request->all(), [
                     'nama' => 'required'
@@ -28,31 +37,38 @@ class BidangSurveiController extends Controller
                 if ($validateData->fails()) {
                     return response()->json($validateData->errors(), 422);
                 }
-                BidangSurvei::firstOrCreate([
+                StatusKepegawaian::firstOrCreate([
                     'nama' => $request->nama
                 ]);
             } else {
-                $bidangSurvei = BidangSurvei::find($request->id);
-                $bidangSurvei->update([
+                $statusKP = StatusKepegawaian::find($request->id);
+                $statusKP->update([
                     'nama' => $request->nama
                 ]);
             }
-            // DB::commit();
             return response()->json([
                 'status' => 'success'
-            ], 201);
+            ], 200);
         } catch (\Exception $e) {
-            // DB::rollBack();
-            return response()->json(['message' => 'ada kesalahan', 'error' => $e], 500);
+            return response()->json([
+                'message' => 'Ada kesalahan',
+                'error' => $e
+            ], 500);
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Request $request)
     {
-        $data = BidangSurvei::find($request->id);
+        $data = StatusKepegawaian::find($request->id);
         try {
             $data->delete();
-            return response()->json(['message' => 'Data terhapus'], 200);
+            return response()->json(['message' => "Data terhapus"], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Ada kesalahan',
