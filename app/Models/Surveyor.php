@@ -14,6 +14,18 @@ class Surveyor extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function bidangSurvei()
+    {
+        return $this->belongsTo(BidangSurvei::class, 'bivei_id');
+    }
+    public function statusKepegawaian()
+    {
+        return $this->belongsTo(StatusKepegawaian::class, 'stawai_id');
+    }
+    public function provesi()
+    {
+        return $this->belongsTo(Provesi::class, 'provesi_id');
+    }
 
     public function scopeFilter($search, array $reqs)
     {

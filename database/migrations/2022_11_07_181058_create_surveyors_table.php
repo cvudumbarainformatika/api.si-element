@@ -33,9 +33,9 @@ return new class extends Migration
             $table->string('nama_buku_tabungan')->nullable();
             $table->bigInteger('no_asuransi_bpjs')->unique()->nullable();
             $table->bigInteger('nilai_toefl')->nullable();
-            $table->string('bidang_survei')->nullable();
-            $table->string('status_kepegawaian')->nullable();
-            $table->string('profesi')->nullable();
+            $table->bigInteger('bivei_id')->nullable();
+            $table->bigInteger('stawai_id')->nullable();
+            $table->bigInteger('profesi_id')->nullable();
             $table->string('alamat')->nullable();
             $table->string('provinsi')->nullable();
             $table->string('kabkot')->nullable();
