@@ -20,6 +20,7 @@ class SurveyorController extends Controller
     {
         $Surveyor = Surveyor::orderBy(request('order_by'), request('sort'))
             ->filter(request(['q']))->paginate(request('per_page'));
+        $Surveyor->load('bidangSurvei');
         return response()->json($Surveyor, 200);
     }
 
@@ -54,6 +55,9 @@ class SurveyorController extends Controller
     {
         $Surveyor = Surveyor::findOrFail($id);
         $Surveyor->load('user');
+        $Surveyor->load('bidangSurvei');
+        $Surveyor->load('statusKepegawaian');
+        $Surveyor->load('provesi');
         $response = [
             'message' => 'Detail data',
             'data' => $Surveyor

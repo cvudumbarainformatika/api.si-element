@@ -8,6 +8,7 @@ Route::group([
     'prefix' => 'statusKp'
 ], function () {
     Route::get('/all', [StatusKPController::class, 'index']);
+    Route::get('/data', [StatusKPController::class, 'master']);
     Route::post('/store', [StatusKPController::class, 'store']);
     Route::post('/destroy', [StatusKPController::class, 'destroy']);
 });

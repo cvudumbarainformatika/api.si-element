@@ -20,6 +20,11 @@ class ProvesiController extends Controller
             ->filter(request(['q']))->paginate(request('per_page'));
         return response()->json($provesi, 200);
     }
+    public function master()
+    {
+        $provesi = Provesi::all();
+        return response()->json($provesi, 200);
+    }
 
     /**
      * Store a newly created resource in storage.

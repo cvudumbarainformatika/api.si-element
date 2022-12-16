@@ -8,6 +8,7 @@ Route::group([
     'prefix' => 'provesi'
 ], function () {
     Route::get('/all', [ProvesiController::class, 'index']);
+    Route::get('/data', [ProvesiController::class, 'master']);
     Route::post('/store', [ProvesiController::class, 'store']);
     Route::post('/destroy', [ProvesiController::class, 'destroy']);
 });

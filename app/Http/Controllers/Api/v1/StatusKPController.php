@@ -21,6 +21,12 @@ class StatusKPController extends Controller
         return response()->json($statusKP, 200);
     }
 
+    public function master()
+    {
+        $statusKP = StatusKepegawaian::all();
+        return response()->json($statusKP, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

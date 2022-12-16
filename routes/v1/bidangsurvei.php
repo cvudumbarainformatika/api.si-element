@@ -8,6 +8,7 @@ Route::group([
     'prefix' => 'bidangsurvei'
 ], function () {
     Route::get('/all', [BidangSurveiController::class, 'index']);
+    Route::get('/data', [BidangSurveiController::class, 'master']);
     Route::post('/store', [BidangSurveiController::class, 'store']);
     Route::post('/destroy', [BidangSurveiController::class, 'destroy']);
 });

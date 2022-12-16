@@ -16,6 +16,11 @@ class BidangSurveiController extends Controller
             ->filter(request(['q']))->paginate(request('per_page'));
         return response()->json($bidang, 200);
     }
+    public function master()
+    {
+        $bidang = BidangSurvei::all();
+        return response()->json($bidang);
+    }
 
     public function store(Request $request)
     {
