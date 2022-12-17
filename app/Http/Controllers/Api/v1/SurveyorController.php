@@ -20,7 +20,6 @@ class SurveyorController extends Controller
     {
         $Surveyor = Surveyor::orderBy(request('order_by'), request('sort'))
             ->filter(request(['q']))->paginate(request('per_page'));
-        $Surveyor->load('bidangSurvei');
         return response()->json($Surveyor, 200);
     }
 
